@@ -28,20 +28,22 @@ class Rent(object):
         return Decimal(price)
 
     def rent_bikes(self, bikes, hours, family=False, **kwars):
-        return_time = datetime.now() + timedelta(hours=hours)
-        rent = {
-            'bikes': bikes,
-            'hours': hours,
-            'price': 0,
-            'family_surname': None,
-            'return_time': return_time.strftime('%d/%m/%Y a las %H:%M')
-        }
+        rent = None
+        if bikes and hours and type(bikes) == int and type(hours) == int:
+            return_time = datetime.now() + timedelta(hours=hours)
+            rent = {
+                'bikes': bikes,
+                'hours': hours,
+                'price': 0,
+                'family_surname': None,
+                'return_time': return_time.strftime('%d/%m/%Y a las %H:%M')
+            }
 
-        if family:
-            rent["family_surname"] = kwars.get("surname", "Anonymous")
+            if family:
+                rent["family_surname"] = kwars.get("surname", "Anonymous")
 
-        rent["price"] = self._calculate_price(bikes, hours, family=family)
-        self.rents.append(rent)
+            rent["price"] = self._calculate_price(bikes, hours, family=family)
+            self.rents.append(rent)
         return rent
 
     def show_rents(self):
